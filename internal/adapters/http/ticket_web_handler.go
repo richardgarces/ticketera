@@ -93,12 +93,20 @@ func TicketWebHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	// Estructura para pasar tickets y color al template
+	// Leer ticketsPorFila del query string
+	ticketsPorFilaStr := r.URL.Query().Get("ticketsPorFila")
+	ticketsPorFila, _ := strconv.Atoi(ticketsPorFilaStr)
+	if ticketsPorFila < 1 {
+		ticketsPorFila = 4 // valor por defecto
+	}
 	data := struct {
-		Tickets []TicketData
-		Color   string
+		Tickets        []TicketData
+		Color          string
+		TicketsPorFila int
 	}{
-		Tickets: tickets,
-		Color:   color,
+		Tickets:        tickets,
+		Color:          color,
+		TicketsPorFila: ticketsPorFila,
 	}
 
 	wd, err := os.Getwd()
@@ -125,7 +133,8 @@ func TicketWebHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		},
 	}
-	tmpl, err := template.New("template_vale_por.html").Funcs(funcMap).ParseFiles(templatePath)
+	baseName := templateName
+	tmpl, err := template.New(baseName).Funcs(funcMap).ParseFiles(templatePath)
 	if err != nil {
 		http.Error(w, "Error cargando template", 500)
 		return

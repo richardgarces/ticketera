@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"/><title>Panel control</title>
+<style>
+  body{font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;margin:0;padding:1cm;}
+  .ticket{border:2px solid #444;background:{{$.Color}};border-radius:8px;margin-bottom:12px;padding:14px;page-break-inside:avoid;box-shadow:0 2px 4px rgba(0,0,0,0.08);}
+  .control{font-size:15px;font-weight:bold;color:#222;margin-bottom:6px;}
+  .cliente{font-size:14px;color:#111;}
+  .meta{font-size:11px;color:#555;display:flex;justify-content:space-between;margin-top:8px;}
+</style>
+<style>
+  @media print {
+    @page {
+      size: letter portrait;
+      margin: 0;
+    }
+    body {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .pagina {
+      padding: 0 !important;
+    }
+    .fila {
+      page-break-inside: avoid;
+    }
+    .ticket-completo {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="pagina">
+  {{ $n := or $.TicketsPorFila 2 }}
+  {{ $total := len .Tickets }}
+  {{range $i, $ticket := .Tickets}}
+    {{if eq (mod $i $n) 0}}
+    <div class="fila" style="display:flex;gap:16px;">
+    {{end}}
+      <div class="ticket ticket-completo" style="flex:1;">
+        <div class="control">{{$ticket.ENCABEZADO}} N°{{$ticket.CORRELATIVO}}</div>
+        <div class="cliente">{{$ticket.CONTENT}}</div>
+        <div class="meta"><div>{{$ticket.FECHA_ACTUAL}}</div><div>{{$ticket.PIE}}</div></div>
+      </div>
+    {{ $next := add $i 1 }}
+    {{if or (eq (mod $next $n) 0) (eq $next $total)}}
+    </div>
+    {{end}}
+  {{end}}
+</div>
+</body></html>

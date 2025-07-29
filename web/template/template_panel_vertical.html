@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"/><title>Panel vertical</title>
+<style>
+  body{font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;margin:0;padding:1cm;}
+  .ticket{border:1px dashed #bbb;background:{{$.Color}};margin-bottom:10px;max-width:320px;margin-left:auto;margin-right:auto;page-break-inside:avoid;}
+  .titulo{font-weight:bold;text-align:center;margin:10px 0 8px 0;}
+  .contenido{padding:0 10px 10px 10px;font-size:14px;}
+  .meta{font-size:11px;color:#666;display:flex;justify-content:space-between;padding:0 10px 10px 10px;}
+</style>
+<style>
+  @media print {
+    @page {
+      size: letter portrait;
+      margin: 0;
+    }
+    body {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .pagina {
+      padding: 0 !important;
+    }
+    .fila {
+      page-break-inside: avoid;
+    }
+    .ticket-completo {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+</style>
+</style>
+</head>
+<body>
+<div class="pagina">
+  {{range $i, $ticket := .Tickets}}
+    {{if eq (mod $i 2) 0}}
+    <div class="fila" style="display:flex;gap:16px;">
+    {{end}}
+      <div class="ticket ticket-completo" style="flex:1;">
+        <div class="titulo">{{$ticket.ENCABEZADO}} N°{{$ticket.CORRELATIVO}}</div>
+        <div class="contenido">{{$ticket.CONTENT}}</div>
+        <div class="meta"><div>{{$ticket.FECHA_ACTUAL}}</div><div>{{$ticket.PIE}}</div></div>
+      </div>
+    {{if or (eq (mod $i 2) 1) (eq (add $i 1) (len $.Tickets))}}
+    </div>
+    {{end}}
+  {{end}}
+</div>
+</body></html>

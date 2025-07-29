@@ -101,7 +101,25 @@
             <div class="col-md-6 form-group">
                 <label for="template" class="form-label"><i class="bi bi-window-stack me-2" style="color:#42a5f5;"></i>Plantilla</label>
                 <select class="form-select" id="template" name="template">
-                    <option value="template_vale_por.html">Vale por (predeterminado)</option>
+                    <option value="template_vale_por.html" selected>Vale por (predeterminado)</option>
+                    <option value="template_panel_ancho.html">Panel ancho</option>
+                    <option value="template_panel_simple.html">Panel simple</option>
+                    <option value="template_panel_control.html">Panel control</option>
+                    <option value="template_panel_control_vertical.html">Panel control vertical</option>
+                    <option value="template_panel_control_vertical_sin_logo.html">Panel control vertical sin logo</option>
+                    <option value="template_panel_control_vertical_logo_grande.html">Panel control vertical logo grande</option>
+                    <option value="template_panel_control_vertical_logo_grande_pie.html">Panel control vertical logo grande pie</option>
+                    <option value="template_panel_control_vertical_logo_grande_4_fila.html">Panel control vertical logo grande (4 por fila)</option>
+                    <option value="template_panel_control_vertical_logo_grande_pie_color.html">Panel control vertical logo grande pie color</option>
+                    <option value="template_con_sombra.html">Con sombra</option>
+                    <option value="template_control_arriba.html">Control arriba</option>
+                    <option value="template_dos_ticket_ongrid.html">Dos tickets en grilla</option>
+                    <option value="template_fondo_claro.html">Fondo claro</option>
+                    <option value="template_minimalista.html">Minimalista</option>
+                    <option value="template_tipo_sticker.html">Tipo sticker</option>
+                    <option value="template_tipo_tabla.html">Tipo tabla</option>
+                    <option value="template_tipo_tarjeta.html">Tipo tarjeta</option>
+                    <option value="template_vertical.html">Vertical</option>
                 </select>
             </div>
             <div class="col-md-6 form-group">
@@ -140,10 +158,28 @@
                 <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" value="1">
             </div>
             <div class="col-md-4 form-group">
+                <label for="ticketsPorFila" class="form-label"><i class="bi bi-grid-3x3-gap-fill me-2" style="color:#1976d2;"></i>Tickets por fila</label>
+                <input type="number" class="form-control" id="ticketsPorFila" name="ticketsPorFila" min="1" max="8" value="4">
+            </div>
+            <div class="col-md-4 form-group">
                 <label for="inicial" class="form-label"><i class="bi bi-list-ol me-2" style="color:#c62828;"></i>Número inicial</label>
                 <input type="number" class="form-control" id="inicial" name="inicial" min="1" value="1">
             </div>
             <div class="col-12 d-flex justify-content-end mt-3">
+        <!-- Modal de ejemplo de plantilla -->
+        <div class="modal fade" id="modalEjemploPlantilla" tabindex="-1" aria-labelledby="modalEjemploPlantillaLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalEjemploPlantillaLabel">Ejemplo de plantilla</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+              </div>
+              <div class="modal-body">
+                <div id="previewPlantilla" style="background:#fff8e1;padding:24px;border-radius:12px;box-shadow:0 2px 12px #0001;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
                 <button type="button" class="btn btn-modern btn-lg px-5 py-2" id="btnWeb">
                     <i class="bi bi-printer-fill me-2" style="color:#fff;"></i> Generar Ticket Web
                 </button>
@@ -154,6 +190,272 @@
       </div>
     </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Vista previa de plantilla en modal
+const ejemplosPlantillas = {
+  'template_con_sombra.html': `
+    <div style='font-family:sans-serif;'>
+      <div style='background:#fff8e1;border-radius:8px;box-shadow:0 2px 4px #0002;margin-bottom:12px;padding:16px;max-width:350px;'>
+        <div style='font-size:15px;font-weight:bold;color:#222;margin-bottom:6px;'>Control N°123</div>
+        <div style='display:flex;align-items:center;gap:12px;'>
+          <img src="https://placehold.co/50x50" style="width:50px;height:50px;object-fit:contain;border-radius:8px;" alt="Logo" />
+          <div style='flex:1;font-size:15px;font-weight:bold;color:#111;'>Lorem ipsum dolor sit amet</div>
+        </div>
+        <div style='font-size:11px;color:#555;display:flex;justify-content:space-between;margin-top:8px;'><div>28/07/2025</div><div>Gracias por su compra</div></div>
+      </div>
+    </div>
+  `,
+  'template_control_arriba.html': `
+    <div style='font-family:Verdana,sans-serif;'>
+      <div style='border:2px dashed #666;background:#fff8e1;margin-bottom:10px;max-width:350px;'>
+        <div style='padding:8px;background:#ddd;font-weight:bold;'>Control N°123</div>
+        <div style='padding:8px;'>
+          <div style='display:flex;align-items:center;gap:8px;'>
+            <img src="https://placehold.co/45x45" style="width:45px;height:45px;object-fit:contain;border-radius:8px;" alt="Logo" />
+            <div style='font-size:12px;font-weight:bold;color:#444;'>N°123</div>
+            <div style='flex:1;text-align:center;font-size:18px;font-weight:bold;'>Lorem ipsum dolor sit amet</div>
+          </div>
+          <div style='display:flex;justify-content:space-between;margin-top:5px;font-size:10px;color:#777;'><div>28/07/2025</div><div>Gracias por su compra</div></div>
+        </div>
+      </div>
+    </div>
+  `,
+  'template_dos_ticket_ongrid.html': `
+    <div style='font-family:Arial,sans-serif;'>
+      <div style='display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px;background:#fff8e1;'>
+        <div style='border:1px solid #ccc;padding:10px;'>
+          <div style='font-weight:bold;color:#333;margin-bottom:6px;'>Control N°123</div>
+          <div style='font-size:13px;'>Lorem ipsum dolor sit amet</div>
+          <div style='font-size:11px;margin-top:5px;'>28/07/2025 · Gracias por su compra</div>
+        </div>
+        <div style='border:1px solid #ccc;padding:10px;'>
+          <div style='font-weight:bold;color:#333;margin-bottom:6px;'>Control N°124</div>
+          <div style='font-size:13px;'>Lorem ipsum dolor sit amet</div>
+          <div style='font-size:11px;margin-top:5px;'>28/07/2025 · Gracias por su compra</div>
+        </div>
+      </div>
+    </div>
+  `,
+  'template_fondo_claro.html': `
+    <div style='font-family:Segoe UI,sans-serif;'>
+      <div style='background:#fff8e1;border-left:5px solid #555;margin-bottom:12px;padding:12px;max-width:350px;'>
+        <div style='font-size:15px;color:#333;font-weight:bold;margin-bottom:5px;'>Control N°123</div>
+        <div style='text-align:center;font-size:16px;color:#222;margin-bottom:5px;'>Lorem ipsum dolor sit amet</div>
+        <div style='display:flex;justify-content:space-between;font-size:11px;color:#666;'><div>28/07/2025</div><div>Gracias por su compra</div></div>
+      </div>
+    </div>
+  `,
+  'template_minimalista.html': `
+    <div style='font-family:Helvetica,Arial,sans-serif;'>
+      <div style='padding:10px;margin-bottom:8px;background:#fff8e1;max-width:350px;'>
+        <div style='font-size:13px;font-weight:bold;color:#222;'>Control N°123</div>
+        <div style='font-size:14px;color:#000;margin:6px 0;'>Lorem ipsum dolor sit amet</div>
+        <div style='font-size:11px;color:#555;display:flex;justify-content:space-between;'><span>28/07/2025</span><span>Gracias por su compra</span></div>
+      </div>
+    </div>
+  `,
+  'template_tipo_sticker.html': `
+    <div style='font-family:Arial,sans-serif;'>
+      <div style='display:inline-block;width:48%;margin:1%;padding:8px;border:2px dashed #666;background:#fff8e1;vertical-align:top;max-width:170px;'>
+        <div style='font-size:14px;font-weight:bold;margin-bottom:4px;'>Control N°123</div>
+        <div style='text-align:left;font-size:14px;margin-bottom:4px;'>Lorem ipsum dolor sit amet</div>
+        <div style='font-size:10px;color:#555;'>28/07/2025</div>
+        <div style='font-size:10px;text-align:right;color:#555;'>Gracias por su compra</div>
+      </div>
+    </div>
+  `,
+  'template_tipo_tabla.html': `
+    <div style='font-family:Tahoma,sans-serif;'>
+      <div style='border:3px solid #444;background:#fff8e1;padding:15px;margin-bottom:15px;max-width:350px;'>
+        <div style='font-size:16px;font-weight:bold;margin-bottom:8px;'>Control N°123</div>
+        <div style='text-align:center;font-size:17px;font-weight:bold;margin-bottom:10px;'>Lorem ipsum dolor sit amet</div>
+        <div><span style='font-size:12px;color:#666;'>28/07/2025</span><span style='float:right;font-size:12px;color:#666;'>Gracias por su compra</span></div>
+      </div>
+    </div>
+  `,
+  'template_tipo_tarjeta.html': `
+    <div style='font-family:Tahoma,sans-serif;'>
+      <div style='border:3px solid #444;background:#fff8e1;padding:15px;margin-bottom:15px;max-width:350px;'>
+        <div style='font-size:16px;font-weight:bold;margin-bottom:8px;'>Control N°123</div>
+        <div style='text-align:center;font-size:17px;font-weight:bold;margin-bottom:10px;'>Lorem ipsum dolor sit amet</div>
+        <div><span style='font-size:12px;color:#666;'>28/07/2025</span><span style='float:right;font-size:12px;color:#666;'>Gracias por su compra</span></div>
+      </div>
+    </div>
+  `,
+  'template_vertical.html': `
+    <div style='font-family:sans-serif;'>
+      <div style='border:1px dashed #888;margin:5px;padding:10px;background:#fff8e1;max-width:350px;'>
+        <div style='background:#f0f0f0;padding:8px;font-size:14px;font-weight:bold;'>Control N°123</div>
+        <div style='padding:8px;font-size:14px;'>
+          <div style='display:flex;align-items:center;gap:10px;'>
+            <img src="https://placehold.co/40x40" style="width:40px;height:40px;object-fit:contain;border-radius:8px;" alt="Logo" />
+            <div style='flex:1;text-align:center;font-size:16px;font-weight:bold;'>Lorem ipsum dolor sit amet</div>
+          </div>
+          <div style='display:flex;justify-content:space-between;font-size:11px;color:#666;margin-top:5px;'><div>28/07/2025</div><div>Gracias por su compra</div></div>
+        </div>
+      </div>
+    </div>
+  `,
+  'template_vale_por.html': `
+    <div style='font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;'>
+      <div style='display:flex;border:1px dashed #bbb;border-radius:8px;overflow:hidden;'>
+        <div style='background:#f9f9f9;padding:12px 16px;width:25%;border-right:1px solid #eee;'>
+          <div style='font-size:14px;font-weight:bold;color:#222;margin-bottom:6px;'>Control N°123</div>
+          <div style='font-size:14px;color:#000;'>Lorem ipsum dolor sit amet</div>
+        </div>
+        <div style='width:75%;padding:12px 16px;'>
+          <div style='font-size:12px;color:#333;margin-bottom:8px;'>Título de ejemplo</div>
+          <div style='display:flex;align-items:center;gap:12px;'>
+            <div style='display:flex;flex-direction:column;align-items:center;width:60px;'>
+              <img src="https://placehold.co/50x50" style="width:50px;height:50px;object-fit:contain;border-radius:6px;" alt="Logo" />
+              <div style='font-size:11px;color:#444;font-weight:bold;margin-top:5px;'>N°123</div>
+            </div>
+            <div style='flex:1;font-size:16px;font-weight:bold;color:#000;text-align:center;'>Vale por 1 completo</div>
+          </div>
+          <div style='display:flex;justify-content:space-between;align-items:center;margin-top:10px;'>
+            <div style='font-size:11px;color:#666;'>28/07/2025</div>
+            <div style='font-size:11px;color:#999;text-align:right;'>Gracias por su aporte</div>
+          </div>
+        </div>
+      </div>
+    </div>
+   `,
+  'template_panel_simple.html': `
+    <div style='font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;'>
+      <div style='border:1px dashed #bbb;background:#fff8e1;margin-bottom:10px;padding:18px 24px;'>
+        <div style='font-size:15px;font-weight:bold;margin-bottom:8px;'>Control N°123</div>
+        <div style='font-size:16px;font-weight:bold;text-align:center;margin-bottom:8px;'>Lorem ipsum dolor sit amet</div>
+        <div style='font-size:11px;color:#666;display:flex;justify-content:space-between;'><div>28/07/2025</div><div>Gracias por su aporte</div></div>
+      </div>
+    </div>
+  `,
+  'template_panel_ancho.html': `
+    <div style='font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;'>
+      <div style='display:flex;border:1px dashed #bbb;background:#fff8e1;margin-bottom:10px;'>
+        <div style='width:30%;padding:10px;border-right:1px solid #ccc;font-size:14px;font-weight:bold;background:#efefef;'>Control N°123</div>
+        <div style='flex:1;padding:10px;font-size:14px;'>
+          <div style='margin-bottom:8px;font-weight:bold;text-align:center;'>Lorem ipsum dolor sit amet</div>
+          <div style='font-size:11px;color:#666;display:flex;justify-content:space-between;'><div>28/07/2025</div><div>Gracias por su aporte</div></div>
+        </div>
+      </div>
+    </div>
+   `,
+  'template_panel_simple_logo.html': `
+    <div style='font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;'>
+      <div style='border:1px dashed #bbb;background:#fff8e1;margin-bottom:10px;padding:18px 24px;display:flex;align-items:center;'>
+        <img src="https://placehold.co/60x60" style="width:60px;height:60px;object-fit:contain;border-radius:8px;margin-right:18px;" alt="Logo" />
+        <div style='flex:1;'>
+          <div style='font-size:15px;font-weight:bold;margin-bottom:8px;'>Control N°123</div>
+          <div style='font-size:16px;font-weight:bold;text-align:center;margin-bottom:8px;'>Lorem ipsum dolor sit amet</div>
+          <div style='font-size:11px;color:#666;display:flex;justify-content:space-between;'><div>28/07/2025</div><div>Gracias por su aporte</div></div>
+        </div>
+      </div>
+    </div>
+  `
+  ,
+  'template_panel_ancho_logo.html': `
+    <div style='font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;'>
+      <div style='display:flex;border:1px dashed #bbb;background:#fff8e1;margin-bottom:10px;'>
+        <div style='width:30%;padding:10px;border-right:1px solid #ccc;font-size:14px;font-weight:bold;background:#efefef;display:flex;flex-direction:column;align-items:center;'>
+          <img src="https://placehold.co/60x60" style="width:60px;height:60px;object-fit:contain;border-radius:8px;margin-bottom:8px;" alt="Logo" />
+          <span>Control N°123</span>
+        </div>
+        <div style='flex:1;padding:10px;font-size:14px;'>
+          <div style='margin-bottom:8px;font-weight:bold;text-align:center;'>Lorem ipsum dolor sit amet</div>
+          <div style='font-size:11px;color:#666;display:flex;justify-content:space-between;'><div>28/07/2025</div><div>Gracias por su aporte</div></div>
+        </div>
+      </div>
+    </div>
+  `,
+  'template_panel_control.html': `
+    <div style='font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;'>
+      <div style='border:1px dashed #bbb;background:#fff8e1;margin-bottom:10px;padding:18px 24px;'>
+        <div style='font-size:15px;font-weight:bold;margin-bottom:8px;'>Control N°123</div>
+        <div style='font-size:14px;text-align:left;margin-bottom:8px;'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae.</div>
+        <div style='font-size:11px;color:#666;text-align:right;'>28/07/2025</div>
+      </div>
+    </div>
+  `
+  ,
+  'template_panel_control_logo.html': `
+    <div style='font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;'>
+      <div style='border:1px dashed #bbb;background:#fff8e1;margin-bottom:10px;padding:18px 24px;display:flex;align-items:center;'>
+        <img src="https://placehold.co/60x60" style="width:60px;height:60px;object-fit:contain;border-radius:8px;margin-right:18px;" alt="Logo" />
+        <div style='flex:1;'>
+          <div style='font-size:15px;font-weight:bold;margin-bottom:8px;'>Control N°123</div>
+          <div style='font-size:14px;text-align:left;margin-bottom:8px;'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae.</div>
+          <div style='font-size:11px;color:#666;text-align:right;'>28/07/2025</div>
+        </div>
+      </div>
+    </div>
+  `
+  ,
+  'template_panel_control_vertical.html': `
+    <div style='font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;'>
+      <div style='border:1px dashed #bbb;background:#fff8e1;margin-bottom:10px;padding:18px 24px;display:flex;flex-direction:column;align-items:center;'>
+        <div style='font-size:15px;font-weight:bold;margin-bottom:8px;'>Control N°123</div>
+        <div style='font-size:14px;text-align:center;margin-bottom:8px;'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae.</div>
+        <img src="https://placehold.co/60x60" style="width:60px;height:60px;object-fit:contain;border-radius:8px;margin-bottom:8px;" alt="Logo" />
+        <div style='font-size:11px;color:#666;text-align:right;width:100%;'>28/07/2025</div>
+      </div>
+    </div>
+  `
+  ,
+  'template_panel_control_vertical_sin_logo.html': `
+    <div style='font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;'>
+      <div style='border:1px dashed #bbb;background:#fff8e1;margin-bottom:10px;padding:18px 24px;display:flex;flex-direction:column;align-items:center;'>
+        <div style='font-size:15px;font-weight:bold;margin-bottom:8px;'>Control N°123</div>
+        <div style='font-size:14px;text-align:center;margin-bottom:8px;'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae.</div>
+        <div style='font-size:11px;color:#666;text-align:right;width:100%;'>28/07/2025</div>
+      </div>
+    </div>
+  `
+  ,
+  'template_panel_control_vertical_logo_grande.html': `
+    <div style='font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;'>
+      <div style='border:1px dashed #bbb;background:#fff8e1;margin-bottom:10px;padding:18px 24px;display:flex;flex-direction:column;align-items:center;'>
+        <img src="https://placehold.co/100x100" style="width:100px;height:100px;object-fit:contain;border-radius:12px;margin-bottom:12px;" alt="Logo grande" />
+        <div style='font-size:15px;font-weight:bold;margin-bottom:8px;'>Control N°123</div>
+        <div style='font-size:14px;text-align:center;margin-bottom:8px;'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae.</div>
+        <div style='font-size:11px;color:#666;text-align:right;width:100%;'>28/07/2025</div>
+      </div>
+    </div>
+  `
+  ,
+  'template_panel_control_vertical_logo_grande_pie.html': `
+    <div style='font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;'>
+      <div style='border:1px dashed #bbb;background:#fff8e1;margin-bottom:10px;padding:18px 24px;display:flex;flex-direction:column;align-items:center;'>
+        <img src="https://placehold.co/100x100" style="width:100px;height:100px;object-fit:contain;border-radius:12px;margin-bottom:12px;" alt="Logo grande" />
+        <div style='font-size:15px;font-weight:bold;margin-bottom:8px;'>Control N°123</div>
+        <div style='font-size:14px;text-align:center;margin-bottom:8px;'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae.</div>
+        <div style='font-size:11px;color:#666;text-align:right;width:100%;'>28/07/2025</div>
+        <div style='font-size:12px;color:#999;text-align:center;width:100%;margin-top:10px;'>Gracias por su compra</div>
+      </div>
+    </div>
+  `
+  ,
+  'template_panel_control_vertical_logo_grande_pie_color.html': `
+    <div style='font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;'>
+      <div style='border:1px dashed #bbb;background:linear-gradient(135deg,#fff8e1 60%,#ffe0b2 100%);margin-bottom:10px;padding:18px 24px;display:flex;flex-direction:column;align-items:center;'>
+        <img src="https://placehold.co/100x100" style="width:100px;height:100px;object-fit:contain;border-radius:12px;margin-bottom:12px;" alt="Logo grande" />
+        <div style='font-size:15px;font-weight:bold;margin-bottom:8px;color:#ff9800;'>Control N°123</div>
+        <div style='font-size:14px;text-align:center;margin-bottom:8px;color:#6d4c41;'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae.</div>
+        <div style='font-size:11px;color:#666;text-align:right;width:100%;'>28/07/2025</div>
+        <div style='font-size:12px;color:#ff9800;text-align:center;width:100%;margin-top:10px;'>Gracias por su compra</div>
+      </div>
+    </div>
+  `
+};
+
+document.getElementById('template').addEventListener('change', function() {
+  const val = this.value;
+  if (ejemplosPlantillas[val]) {
+    document.getElementById('previewPlantilla').innerHTML = ejemplosPlantillas[val];
+    const modal = new bootstrap.Modal(document.getElementById('modalEjemploPlantilla'));
+    modal.show();
+  }
+});
+</script>
 <script>
 // Validar tamaño y dimensiones del logo antes de enviar y subirlo vía AJAX
 document.getElementById('logo').addEventListener('change', function(e) {
@@ -260,6 +562,7 @@ document.getElementById('btnWeb').onclick = async function() {
     params.append('fecha', formData.get('fecha'));
     params.append('color', formData.get('color'));
     // No se envía logo para web preview
+    params.append('ticketsPorFila', formData.get('ticketsPorFila'));
     window.open('/ticketweb?' + params.toString(), '_blank');
 }
 </script>

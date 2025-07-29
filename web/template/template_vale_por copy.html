@@ -32,6 +32,10 @@
     .fila {
       page-break-inside: avoid;
     }
+    .ticket-completo {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
   }
 
   .pagina {
@@ -178,7 +182,7 @@
       <div class="ticket-completo">
         <div class="lado control">
           <div class="control-header">{{$ticket.ENCABEZADO}} N°{{$ticket.CORRELATIVO}}</div>
-          <div class="cuerpo">{{$ticket.CONTENT}}</div>
+          <div class="cuerpo">{{$ticket.CONTROL_CONTENT}}</div>
         </div>
         <div class="lado cliente">
           <div class="titulo">{{$ticket.TITULO}}</div>

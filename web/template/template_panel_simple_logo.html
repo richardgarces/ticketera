@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"/><title>Panel simple con logo</title>
+<style>
+  body{font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;margin:0;padding:1cm;}
+  .ticket{border:1px dashed #bbb;background:{{$.Color}};margin-bottom:10px;padding:18px 24px;display:flex;align-items:center;page-break-inside:avoid;}
+  .logo{margin-right:18px;}
+  .logo img{width:60px;height:60px;object-fit:contain;border-radius:8px;}
+  .info{flex:1;}
+  .control{font-size:15px;font-weight:bold;margin-bottom:8px;}
+  .cliente{font-size:16px;font-weight:bold;text-align:center;margin-bottom:8px;}
+  .meta{font-size:11px;color:#666;display:flex;justify-content:space-between;}
+</style>
+<style>
+  @media print {
+    @page {
+      size: letter portrait;
+      margin: 0;
+    }
+    body {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .pagina {
+      padding: 0 !important;
+    }
+    .fila {
+      page-break-inside: avoid;
+    }
+    .ticket-completo {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+</style>
+</style>
+</head>
+<body>
+{{ $n := or $.TicketsPorFila 4 }}
+{{ $total := len .Tickets }}
+{{range $i, $ticket := .Tickets}}
+  {{if eq (mod $i $n) 0}}
+  <div class="fila" style="display:flex;gap:12px;margin-bottom:12px;justify-content:center;">
+  {{end}}
+    <div class="ticket ticket-completo" style="flex:1 1 0;min-width:180px;max-width:32%;background:{{$.Color}};display:flex;align-items:center;">
+      {{if $ticket.URI_LOGO}}
+        <div class="logo"><img src="{{$ticket.URI_LOGO}}" alt="Logo"/></div>
+      {{end}}
+      <div class="info">
+        <div class="control">{{$ticket.ENCABEZADO}} N°{{$ticket.CORRELATIVO}}</div>
+        <div class="cliente">{{$ticket.CONTENT}}</div>
+        <div class="meta"><div>{{$ticket.FECHA_ACTUAL}}</div><div>{{$ticket.PIE}}</div></div>
+      </div>
+    </div>
+  {{ $next := add $i 1 }}
+  {{if or (eq (mod $next $n) 0) (eq $next $total)}}
+  </div>
+  {{end}}
+{{end}}
+</body></html>

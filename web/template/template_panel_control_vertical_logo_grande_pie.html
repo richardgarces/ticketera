@@ -1,0 +1,39 @@
+{{/*
+  Template: template_panel_control_vertical_logo_grande_pie.html
+  Descripción: Panel vertical, 2 tickets por fila, logo grande centrado, pie destacado.
+  Variables esperadas: Tickets (slice), Color, logo, header, content, pie, fecha
+  Helpers: mod, add, len
+*/}}
+<style>
+@media print {
+  .fila { page-break-inside: avoid; }
+  .ticket-completo {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+</style>
+<div class="pagina">
+  {{ $n := or $.TicketsPorFila 2 }}
+  {{ $total := len .Tickets }}
+  {{range $i, $ticket := .Tickets}}
+    {{if eq (mod $i $n) 0}}
+    <div class="fila" style="display:flex;gap:24px;margin-bottom:24px;justify-content:center;">
+    {{end}}
+      <div class="ticket-completo" style="flex:1 1 0;max-width:45%;background:{{$.Color}};border:1px dashed #bbb;border-radius:16px;padding:24px 12px;display:flex;flex-direction:column;align-items:center;box-shadow:0 2px 8px #0001;min-width:220px;">
+        {{ if $ticket.URI_LOGO }}
+          <img src="{{$ticket.URI_LOGO}}" alt="Logo" style="width:100px;height:100px;object-fit:contain;border-radius:12px;margin-bottom:16px;" />
+        {{ end }}
+        <div style="font-size:17px;font-weight:bold;margin-bottom:10px;">{{$ticket.ENCABEZADO}} N°{{$ticket.CORRELATIVO}}</div>
+        <div style="font-size:15px;text-align:center;margin-bottom:10px;">{{$ticket.CONTENT}}</div>
+        <div style="font-size:12px;color:#666;text-align:right;width:100%;">{{$ticket.FECHA_ACTUAL}}</div>
+        {{ if $ticket.PIE }}
+          <div style="font-size:14px;color:#999;text-align:center;width:100%;margin-top:14px;font-weight:bold;">{{$ticket.PIE}}</div>
+        {{ end }}
+      </div>
+    {{ $next := add $i 1 }}
+    {{if or (eq (mod $next $n) 0) (eq $next $total)}}
+    </div>
+    {{end}}
+  {{end}}
+</div>

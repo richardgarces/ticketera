@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"/><title>Panel vertical con logo</title>
+<style>
+  body{font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;margin:0;padding:1cm;}
+  .ticket{border:1px dashed #bbb;background:{{$.Color}};margin-bottom:10px;max-width:320px;margin-left:auto;margin-right:auto;page-break-inside:avoid;}
+  .logo{text-align:center;padding:10px 0;}
+  .logo img{width:60px;height:60px;object-fit:contain;border-radius:8px;}
+  .titulo{font-weight:bold;text-align:center;margin-bottom:8px;}
+  .contenido{padding:0 10px 10px 10px;font-size:14px;}
+  .meta{font-size:11px;color:#666;display:flex;justify-content:space-between;padding:0 10px 10px 10px;}
+</style>
+<style>
+  @media print {
+    @page {
+      size: letter portrait;
+      margin: 0;
+    }
+    body {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .pagina {
+      padding: 0 !important;
+    }
+    .fila {
+      page-break-inside: avoid;
+    }
+    .ticket-completo {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+</style>
+</style>
+</head>
+<body>
+{{ $n := or $.TicketsPorFila 4 }}
+{{ $total := len .Tickets }}
+{{range $i, $ticket := .Tickets}}
+  {{if eq (mod $i $n) 0}}
+  <div class="fila" style="display:flex;gap:12px;margin-bottom:12px;justify-content:center;">
+  {{end}}
+    <div class="ticket ticket-completo" style="flex:1 1 0;min-width:180px;max-width:32%;background:{{$.Color}};">
+      <div class="logo">{{if $ticket.URI_LOGO}}<img src="{{$ticket.URI_LOGO}}" alt="Logo"/>{{end}}</div>
+      <div class="titulo">{{$ticket.ENCABEZADO}} N°{{$ticket.CORRELATIVO}}</div>
+      <div class="contenido">{{$ticket.CONTENT}}</div>
+      <div class="meta"><div>{{$ticket.FECHA_ACTUAL}}</div><div>{{$ticket.PIE}}</div></div>
+    </div>
+  {{ $next := add $i 1 }}
+  {{if or (eq (mod $next $n) 0) (eq $next $total)}}
+  </div>
+  {{end}}
+{{end}}
+</body></html>

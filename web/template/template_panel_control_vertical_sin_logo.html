@@ -1,0 +1,36 @@
+{{/*
+  Template: template_panel_control_vertical_sin_logo.html
+  Descripción: Panel vertical, 4 tickets por fila, sin logo.
+  Variables esperadas: Tickets (slice), Color, header, content, pie, fecha
+  Helpers: mod, add, len
+*/}}
+<style>
+@media print {
+  .ticket-row { page-break-inside: avoid; }
+  .ticket-completo {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+</style>
+<div style="width:100%;">
+  {{ $n := or $.TicketsPorFila 4 }}
+  {{ $total := len .Tickets }}
+  {{range $i, $ticket := .Tickets}}
+    {{if eq (mod $i $n) 0}}
+    <div class="ticket-row" style="display:flex;gap:16px;margin-bottom:18px;justify-content:center;">
+    {{end}}
+      <div class="ticket-completo" style="flex:1 1 0;max-width:23%;background:{{$.Color}};border:1px dashed #bbb;border-radius:12px;padding:18px 10px;display:flex;flex-direction:column;align-items:center;box-shadow:0 2px 8px #0001;min-width:180px;">
+        <div style="font-size:15px;font-weight:bold;margin-bottom:8px;">{{$ticket.ENCABEZADO}} N°{{$ticket.CORRELATIVO}}</div>
+        <div style="font-size:14px;text-align:center;margin-bottom:8px;">{{$ticket.CONTENT}}</div>
+        <div style="font-size:11px;color:#666;text-align:right;width:100%;">{{$ticket.FECHA_ACTUAL}}</div>
+        {{ if $ticket.PIE }}
+          <div style="font-size:12px;color:#999;text-align:center;width:100%;margin-top:10px;">{{$ticket.PIE}}</div>
+        {{ end }}
+      </div>
+    {{ $next := add $i 1 }}
+    {{if or (eq (mod $next $n) 0) (eq $next $total)}}
+    </div>
+    {{end}}
+  {{end}}
+</div>

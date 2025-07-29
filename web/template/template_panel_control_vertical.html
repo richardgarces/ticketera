@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"/><title>Panel control vertical</title>
+<style>
+  body{font-family:Verdana,sans-serif;margin:0;padding:1cm;}
+  .ticket{border:2px dashed #666;background:{{$.Color}};margin-bottom:10px;page-break-inside:avoid;}
+  .control{padding:8px;background:#ddd;font-weight:bold;}
+  .cliente{padding:8px;}
+  .fila1{display:flex;align-items:center;gap:8px;}
+  .logo img{width:45px;height:45px;}
+  .numero{font-size:12px;font-weight:bold;color:#444;}
+  .vale{text-align:center;font-size:18px;font-weight:bold;flex:1;}
+  .pie{font-size:10px;color:#777;text-align:right;}
+</style>
+<style>
+  @media print {
+    @page {
+      size: letter portrait;
+      margin: 0;
+    }
+    body {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .pagina {
+      padding: 0 !important;
+    }
+    .fila {
+      page-break-inside: avoid;
+    }
+    .ticket-completo {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+</style>
+</head>
+<body>
+{{ $n := or $.TicketsPorFila 4 }}
+{{ $total := len .Tickets }}
+{{range $i, $ticket := .Tickets}}
+  {{if eq (mod $i $n) 0}}
+  <div class="fila" style="display:flex;gap:12px;margin-bottom:12px;justify-content:center;">
+  {{end}}
+    <div class="ticket ticket-completo" style="flex:1 1 0;min-width:180px;max-width:32%;background:{{$.Color}};">
+      <div class="control">{{$ticket.ENCABEZADO}} N°{{$ticket.CORRELATIVO}}</div>
+      <div class="cliente">
+        <div class="fila1">
+          {{if $ticket.URI_LOGO}}
+            <div class="logo"><img src="{{$ticket.URI_LOGO}}" alt="Logo"/></div>
+          {{end}}
+          <div class="numero">N°{{$ticket.CORRELATIVO}}</div>
+          <div class="vale">{{$ticket.CONTENT}}</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:5px;">
+          <div>{{$ticket.FECHA_ACTUAL}}</div>
+          <div class="pie">{{$ticket.PIE}}</div>
+        </div>
+      </div>
+    </div>
+  {{ $next := add $i 1 }}
+  {{if or (eq (mod $next $n) 0) (eq $next $total)}}
+  </div>
+  {{end}}
+{{end}}
+</body></html>

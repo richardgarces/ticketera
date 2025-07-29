@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"/><title>Panel ancho con logo</title>
+<style>
+  body{font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;margin:0;padding:1cm;}
+  .ticket{display:flex;border:1px dashed #bbb;background:{{$.Color}};margin-bottom:10px;page-break-inside:avoid;}
+  .col-logo{width:30%;padding:10px;border-right:1px solid #ccc;font-size:14px;font-weight:bold;background:#efefef;display:flex;flex-direction:column;align-items:center;}
+  .col-logo img{width:60px;height:60px;object-fit:contain;border-radius:8px;margin-bottom:8px;}
+  .col-main{flex:1;padding:10px;font-size:14px;}
+  .titulo{margin-bottom:8px;font-weight:bold;text-align:center;}
+  .meta{font-size:11px;color:#666;display:flex;justify-content:space-between;}
+</style>
+<style>
+  @media print {
+    @page {
+      size: letter portrait;
+      margin: 0;
+    }
+    body {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .pagina {
+      padding: 0 !important;
+    }
+    .fila {
+      page-break-inside: avoid;
+    }
+    .ticket-completo {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+  }
+</style>
+</style>
+</head>
+<body>
+{{ $n := or $.TicketsPorFila 4 }}
+{{ $total := len .Tickets }}
+{{range $i, $ticket := .Tickets}}
+  {{if eq (mod $i $n) 0}}
+  <div class="fila" style="display:flex;gap:12px;margin-bottom:12px;justify-content:center;">
+  {{end}}
+    <div class="ticket ticket-completo" style="flex:1 1 0;min-width:180px;max-width:32%;background:{{$.Color}};display:flex;">
+      <div class="col-logo">
+        {{if $ticket.URI_LOGO}}<img src="{{$ticket.URI_LOGO}}" alt="Logo"/>{{end}}
+        <span>{{$ticket.ENCABEZADO}} N°{{$ticket.CORRELATIVO}}</span>
+      </div>
+      <div class="col-main">
+        <div class="titulo">{{$ticket.CONTENT}}</div>
+        <div class="meta"><div>{{$ticket.FECHA_ACTUAL}}</div><div>{{$ticket.PIE}}</div></div>
+      </div>
+    </div>
+  {{ $next := add $i 1 }}
+  {{if or (eq (mod $next $n) 0) (eq $next $total)}}
+  </div>
+  {{end}}
+{{end}}
+</body></html>
