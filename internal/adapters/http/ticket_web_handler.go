@@ -47,9 +47,7 @@ func TicketWebHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	logo, _ := repo.GetLogoPath()
-	if logo == "" {
-		logo = "/web/logo.png"
-	}
+	// Si no hay logo, dejar vacío, pero si hay, usar el base64 de la base de datos
 	color := r.URL.Query().Get("color")
 	if color == "" {
 		color = "#fff"
@@ -62,7 +60,7 @@ func TicketWebHandler(w http.ResponseWriter, r *http.Request) {
 		PIE             string
 		CORRELATIVO     int
 		FECHA_ACTUAL    string
-		URI_LOGO        string
+		URI_LOGO        template.URL
 	}
 	// Usar la fecha del formulario si viene, si no buscar en MongoDB, si no la actual
 	fechaActual := r.URL.Query().Get("fecha")
@@ -87,7 +85,7 @@ func TicketWebHandler(w http.ResponseWriter, r *http.Request) {
 			PIE:             pie,
 			CORRELATIVO:     inicial + i,
 			FECHA_ACTUAL:    fechaActual,
-			URI_LOGO:        logo,
+			URI_LOGO:        template.URL(logo),
 		}
 	}
 	// Estructura para pasar tickets y color al template

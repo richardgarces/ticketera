@@ -107,6 +107,9 @@
             <div class="col-md-6 form-group">
                 <label for="logo" class="form-label"><i class="bi bi-image-fill me-2" style="color:#43a047;"></i>Logo</label>
                 <input class="form-control" type="file" id="logo" name="logo" accept="image/*">
+                <div class="mt-2">
+                  <img id="logoPreview" src="" alt="Vista previa logo" style="max-width:60px;max-height:60px;display:none;border-radius:8px;border:1px solid #ccc;" />
+                </div>
             </div>
             <div class="col-md-6 form-group">
                 <label for="header" class="form-label"><i class="bi bi-type-bold me-2" style="color:#8e24aa;"></i>Encabezado</label>
@@ -152,6 +155,64 @@
     </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+// Validar tamaño y dimensiones del logo antes de enviar y subirlo vía AJAX
+document.getElementById('logo').addEventListener('change', function(e) {
+  const file = this.files[0];
+  if (!file) return;
+  if (file.size > 400 * 1024) {
+    alert('El logo no debe superar los 400KB.');
+    this.value = '';
+    return;
+  }
+  const img = new Image();
+  img.onload = () => {
+    if (img.width > 900 || img.height > 900) {
+      alert('El logo no debe superar 900x900 píxeles.');
+      document.getElementById('logo').value = '';
+      return;
+    }
+    // Subir el logo al backend
+    const formData = new FormData();
+    formData.append('logo', file);
+    fetch('/api/logo', {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.url) {
+        // Guardar la URL en un input oculto para usarla en el ticket
+        let input = document.getElementById('logo_url');
+        if (!input) {
+          input = document.createElement('input');
+          input.type = 'hidden';
+          input.id = 'logo_url';
+          input.name = 'logo_url';
+          document.getElementById('ticketForm').appendChild(input);
+        }
+        input.value = data.url;
+        // Vista previa del logo
+        const logoPreview = document.getElementById('logoPreview');
+        if (logoPreview) {
+          logoPreview.src = data.url;
+          logoPreview.style.display = 'block';
+        }
+      } else {
+        alert('Error al guardar el logo.');
+        document.getElementById('logo').value = '';
+      }
+    })
+    .catch(() => {
+      alert('Error al subir el logo.');
+      document.getElementById('logo').value = '';
+    });
+  };
+  img.onerror = () => {
+    alert('Archivo de imagen no válido.');
+    document.getElementById('logo').value = '';
+  };
+  img.src = URL.createObjectURL(file);
+});
 // Vista previa del color seleccionado
 const colorSelect = document.getElementById('color');
 const colorPreview = document.getElementById('colorPreview');
