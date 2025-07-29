@@ -67,7 +67,7 @@
                 </div>
                 <div class="col-md-6 form-group">
                   <label for="valor" class="form-label"><i class="bi bi-pencil-square me-2" style="color:#3949ab;"></i>Valor</label>
-                  <textarea class="form-control" id="valor" name="valor" rows="2" required></textarea>
+                  <input type="text" class="form-control" id="valor" name="valor" required />
                 </div>
                 <div class="col-12 d-flex justify-content-end">
                   <button type="submit" class="btn btn-modern btn-lg px-5 py-2"><i class="bi bi-save2-fill me-2"></i>Guardar Texto</button>
@@ -76,7 +76,18 @@
             </form>
             <hr>
             <h2 class="mb-3 text-center">Textos guardados</h2>
-            <ul id="listaTextos" class="list-group mb-4"></ul>
+            <div class="table-responsive mb-4">
+              <table class="table table-striped align-middle" id="tablaTextos">
+                <thead>
+                  <tr>
+                    <th style="width: 25%">Clave</th>
+                    <th>Valor</th>
+                    <th style="width: 100px">Acción</th>
+                  </tr>
+                </thead>
+                <tbody id="listaTextos"></tbody>
+              </table>
+            </div>
             <form id="logoForm" enctype="multipart/form-data">
               <div class="row g-3 align-items-end">
                 <div class="col-md-8 form-group">
@@ -103,10 +114,37 @@ async function cargarTextos() {
     const lista = document.getElementById('listaTextos');
     lista.innerHTML = '';
     Object.entries(textos).forEach(([clave, valor]) => {
-        const li = document.createElement('li');
-        li.className = 'list-group-item d-flex justify-content-between align-items-center';
-        li.innerHTML = `<span>${clave}: ${valor}</span> <button class='btn btn-danger btn-sm' onclick='eliminarTexto("${clave}")'>Eliminar</button>`;
-        lista.appendChild(li);
+        const tr = document.createElement('tr');
+        // Clave (clickeable)
+        const tdClave = document.createElement('td');
+        tdClave.style.cursor = 'pointer';
+        tdClave.title = 'Editar este texto';
+        tdClave.innerText = clave;
+        tdClave.onclick = function() {
+          document.getElementById('clave').value = clave;
+          document.getElementById('valor').value = valor;
+        };
+        tr.appendChild(tdClave);
+        // Valor (clickeable)
+        const tdValor = document.createElement('td');
+        tdValor.style.cursor = 'pointer';
+        tdValor.title = 'Editar este texto';
+        tdValor.innerText = valor;
+        tdValor.onclick = function() {
+          document.getElementById('clave').value = clave;
+          document.getElementById('valor').value = valor;
+        };
+        tr.appendChild(tdValor);
+        // Acción
+        const tdAccion = document.createElement('td');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn btn-danger btn-sm';
+        btn.innerText = 'Eliminar';
+        btn.onclick = function() { eliminarTexto(clave); };
+        tdAccion.appendChild(btn);
+        tr.appendChild(tdAccion);
+        lista.appendChild(tr);
     });
 }
 
@@ -123,16 +161,31 @@ async function eliminarTexto(clave) {
         alert('Error al eliminar texto');
     }
 }
-document.getElementById('textosForm').onsubmit = async function(e) {
-    e.preventDefault();
-    const data = {
-        clave: this.clave.value,
-        valor: this.valor.value
-    };
+async function guardarTextoAuto() {
+    const clave = document.getElementById('clave').value;
+    const valor = document.getElementById('valor').value;
+    if (!clave || !valor) return;
     const res = await fetch('/api/texto', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(data)
+        body: JSON.stringify({clave, valor})
+    });
+    if (res.ok) {
+        document.getElementById('result').innerHTML = '<div class="alert alert-success">Texto guardado automáticamente.</div>';
+        cargarTextos();
+    } else {
+        document.getElementById('result').innerHTML = '<div class="alert alert-danger">Error al guardar texto.</div>';
+    }
+}
+document.getElementById('textosForm').onsubmit = async function(e) {
+    e.preventDefault();
+    const clave = document.getElementById('clave').value;
+    const valor = document.getElementById('valor').value;
+    if (!clave || !valor) return;
+    const res = await fetch('/api/texto', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({clave, valor})
     });
     if (res.ok) {
         document.getElementById('result').innerHTML = '<div class="alert alert-success">Texto guardado.</div>';
