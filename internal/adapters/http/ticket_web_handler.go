@@ -38,7 +38,11 @@ func TicketWebHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	filtro := r.URL.Query().Get("filtro")
 	if filtro == "" {
-		filtro = "vale por"
+		if val, ok := textos["filtro"]; ok && val != "" {
+			filtro = val
+		} else {
+			filtro = "Vale por:"
+		}
 	}
 	cantidadStr := r.URL.Query().Get("cantidad")
 	cantidad, _ := strconv.Atoi(cantidadStr)
