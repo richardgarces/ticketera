@@ -51,6 +51,19 @@
         color: #fff;
         transform: translateY(-2px) scale(1.03);
     }
+    /* Animación para el icono de papelera */
+    @keyframes shake-trash {
+      10% { transform: scale(1.2) rotate(-10deg); }
+      20% { transform: scale(1.1) rotate(10deg); }
+      30% { transform: scale(1.2) rotate(-10deg); }
+      40% { transform: scale(1.1) rotate(10deg); }
+      50% { transform: scale(1.2) rotate(-10deg); }
+      60% { transform: scale(1.1) rotate(10deg); }
+      70% { transform: scale(1.2) rotate(-10deg); }
+      80% { transform: scale(1.1) rotate(10deg); }
+      90% { transform: scale(1.2) rotate(-10deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
     </style>
 </head>
 <body>
@@ -137,12 +150,27 @@ async function cargarTextos() {
         tr.appendChild(tdValor);
         // Acción
         const tdAccion = document.createElement('td');
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'btn btn-danger btn-sm';
-        btn.innerText = 'Eliminar';
-        btn.onclick = function() { eliminarTexto(clave); };
-        tdAccion.appendChild(btn);
+        const icon = document.createElement('i');
+        icon.className = 'bi bi-trash-fill';
+        icon.style.cursor = 'pointer';
+        icon.style.fontSize = '1.3rem';
+        icon.style.color = '#e53935';
+        icon.title = 'Eliminar';
+        icon.onmouseenter = function() {
+          icon.style.color = '#b71c1c';
+          icon.style.transform = 'scale(1.2) rotate(-10deg)';
+          icon.style.transition = 'all 0.2s';
+        };
+        icon.onmouseleave = function() {
+          icon.style.color = '#e53935';
+          icon.style.transform = 'scale(1) rotate(0deg)';
+        };
+        icon.onclick = async function() {
+          icon.style.animation = 'shake-trash 0.4s';
+          await eliminarTexto(clave);
+          setTimeout(() => { icon.style.animation = ''; }, 400);
+        };
+        tdAccion.appendChild(icon);
         tr.appendChild(tdAccion);
         lista.appendChild(tr);
     });
