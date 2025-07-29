@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrar Textos y Logo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container py-4">
+        <h1 class="mb-4">Administrar Textos y Logo</h1>
+        <form id="textosForm">
+            <div class="mb-3">
+                <label for="clave" class="form-label">Clave</label>
+                <input type="text" class="form-control" id="clave" name="clave" required>
+            </div>
+            <div class="mb-3">
+                <label for="valor" class="form-label">Valor</label>
+                <textarea class="form-control" id="valor" name="valor" rows="2" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Guardar Texto</button>
+        </form>
+        <hr>
+        <h2 class="mb-3">Textos guardados</h2>
+        <ul id="listaTextos" class="list-group mb-4"></ul>
+        <form id="logoForm" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="logo" class="form-label">Logo</label>
+                <input class="form-control" type="file" id="logo" name="logo" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Actualizar Logo</button>
+        </form>
+        <div id="result" class="mt-4"></div>
+    </div>
+<script>
+async function cargarTextos() {
+    const res = await fetch('/api/textos');
+    const textos = await res.json();
+    const lista = document.getElementById('listaTextos');
+    lista.innerHTML = '';
+    Object.entries(textos).forEach(([clave, valor]) => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+        li.innerHTML = `<span>${clave}: ${valor}</span> <button class='btn btn-danger btn-sm' onclick='eliminarTexto("${clave}")'>Eliminar</button>`;
+        lista.appendChild(li);
+    });
+}
+
+async function eliminarTexto(clave) {
+    if (!confirm('¿Seguro que deseas eliminar este texto?')) return;
+    const res = await fetch('/api/texto/delete', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({clave})
+    });
+    if (res.ok) {
+        cargarTextos();
+    } else {
+        alert('Error al eliminar texto');
+    }
+}
+document.getElementById('textosForm').onsubmit = async function(e) {
+    e.preventDefault();
+    const data = {
+        clave: this.clave.value,
+        valor: this.valor.value
+    };
+    const res = await fetch('/api/texto', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    });
+    if (res.ok) {
+        document.getElementById('result').innerHTML = '<div class="alert alert-success">Texto guardado.</div>';
+        cargarTextos();
+    } else {
+        document.getElementById('result').innerHTML = '<div class="alert alert-danger">Error al guardar texto.</div>';
+    }
+}
+window.onload = cargarTextos;
+document.getElementById('logoForm').onsubmit = async function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const res = await fetch('/api/logo', {
+        method: 'POST',
+        body: formData
+    });
+    if (res.ok) {
+        document.getElementById('result').innerHTML = '<div class="alert alert-success">Logo actualizado.</div>';
+    } else {
+        document.getElementById('result').innerHTML = '<div class="alert alert-danger">Error al actualizar logo.</div>';
+    }
+}
+</script>
+</body>
+</html>

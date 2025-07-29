@@ -1,0 +1,50 @@
+# Go
+/bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# VSCode
+.vscode/
+
+# Logs
+*.log
+
+# Dependency directories
+vendor/
+
+# IDEs
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+cmd/ticketera/ticketera
+
+# Temp
+*.tmp
+*.temp
+*.bak
+*.old
+
+# Tickets y archivos generados
+ticket.docx
+web/ticket.docx
+web/tickets.csv
+
+# Archivos de pruebas y backups
+*.old
+*.bak
+*.orig
+*.rej
+
+# Archivos de configuración de entorno
+.env
+.env.*
