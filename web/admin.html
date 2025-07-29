@@ -301,6 +301,9 @@ document.getElementById('textosForm').onsubmit = async function(e) {
     if (res.ok) {
         mostrarAlerta('Texto guardado.', 'success');
         cargarTextos();
+        // Limpiar los campos del formulario
+        document.getElementById('clave').value = '';
+        document.getElementById('valor').value = '';
     } else {
         mostrarAlerta('Error al guardar texto.', 'danger');
     }
