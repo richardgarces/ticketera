@@ -50,6 +50,10 @@ func TicketWebHandler(w http.ResponseWriter, r *http.Request) {
 	if logo == "" {
 		logo = "/web/logo.png"
 	}
+	color := r.URL.Query().Get("color")
+	if color == "" {
+		color = "#fff"
+	}
 	type TicketData struct {
 		ENCABEZADO      string
 		TITULO          string
@@ -86,6 +90,14 @@ func TicketWebHandler(w http.ResponseWriter, r *http.Request) {
 			URI_LOGO:        logo,
 		}
 	}
+	// Estructura para pasar tickets y color al template
+	data := struct {
+		Tickets []TicketData
+		Color   string
+	}{
+		Tickets: tickets,
+		Color:   color,
+	}
 
 	wd, err := os.Getwd()
 	if err != nil {
@@ -116,7 +128,7 @@ func TicketWebHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error cargando template", 500)
 		return
 	}
-	err = tmpl.Execute(w, tickets)
+	err = tmpl.Execute(w, data)
 	if err != nil {
 		http.Error(w, "Error generando tickets", 500)
 	}

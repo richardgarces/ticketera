@@ -5,57 +5,127 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ticketera Web</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>
+    body {
+        background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
+        min-height: 100vh;
+    }
+    .form-label, .form-control, .form-select {
+        transition: box-shadow 0.3s, text-shadow 0.3s, color 0.3s;
+    }
+    .form-label i {
+        transition: color 0.3s;
+        color: #495057;
+    }
+    .form-label:hover i, .form-label:focus i {
+        color: #0d6efd;
+    }
+    .form-label:hover, .form-label:focus {
+        text-shadow: 0 2px 8px #0d6efd33, 0 0 2px #0d6efd;
+        color: #0d6efd;
+    }
+    .form-control:focus, .form-control:hover, .form-select:focus, .form-select:hover {
+        box-shadow: 0 0 0 0.2rem #0d6efd33, 0 2px 8px #0d6efd33;
+        border-color: #0d6efd;
+    }
+    .card {
+        background: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 4px 24px 0 #0001;
+        border: none;
+    }
+    /* Animación de sombra en label solo cuando el input asociado está enfocado o hover */
+    .form-group {
+        position: relative;
+    }
+    .form-group:has(.form-control:focus) .form-label,
+    .form-group:has(.form-control:hover) .form-label,
+    .form-group:has(.form-select:focus) .form-label,
+    .form-group:has(.form-select:hover) .form-label {
+        text-shadow: 0 2px 8px #0d6efd33, 0 0 2px #0d6efd;
+        color: #0d6efd;
+    }
+    .form-group:has(.form-control:focus) .form-label i,
+    .form-group:has(.form-control:hover) .form-label i,
+    .form-group:has(.form-select:focus) .form-label i,
+    .form-group:has(.form-select:hover) .form-label i {
+        color: #0d6efd;
+    }
+    </style>
 </head>
 <body>
 <div class="container py-4">
-    <h1 class="mb-4">Generar Ticket</h1>
-    <form id="ticketForm" enctype="multipart/form-data">
-        <div class="mb-3">
-            <label for="fecha" class="form-label">Fecha (opcional)</label>
-            <input type="date" class="form-control" id="fecha" name="fecha">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-xl-7">
+        <div class="card p-4 mb-4 mt-2">
+          <h1 class="mb-4 text-center">Generar Ticket</h1>
+          <form id="ticketForm" enctype="multipart/form-data">
+        <!-- Eliminado input de fecha duplicado, solo queda el del grid -->
+        <div class="row g-3">
+            <div class="col-md-6 form-group">
+                <label for="color" class="form-label"><i class="bi bi-palette me-2"></i>Color de fondo del ticket</label>
+                <select class="form-select" id="color" name="color">
+                    <option value="#fff8e1" style="background:#fff8e1;">Amarillo pastel</option>
+                    <option value="#e1f5fe" style="background:#e1f5fe;">Celeste pastel</option>
+                    <option value="#fce4ec" style="background:#fce4ec;">Rosa pastel</option>
+                    <option value="#e8f5e9" style="background:#e8f5e9;">Verde pastel</option>
+                    <option value="#f3e5f5" style="background:#f3e5f5;">Lila pastel</option>
+                    <option value="#fff" style="background:#fff;">Blanco clásico</option>
+                </select>
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="template" class="form-label"><i class="bi bi-layout-text-window-reverse me-2"></i>Plantilla</label>
+                <select class="form-select" id="template" name="template">
+                    <option value="template_vale_por.html">Vale por (predeterminado)</option>
+                </select>
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="logo" class="form-label"><i class="bi bi-image me-2"></i>Logo</label>
+                <input class="form-control" type="file" id="logo" name="logo" accept="image/*">
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="header" class="form-label"><i class="bi bi-type me-2"></i>Encabezado</label>
+                <input type="text" class="form-control" id="header" name="header" placeholder="Ej: Control">
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="title" class="form-label"><i class="bi bi-card-heading me-2"></i>Título</label>
+                <input type="text" class="form-control" id="title" name="title">
+            </div>
+            <div class="col-12 form-group">
+                <label for="content" class="form-label"><i class="bi bi-body-text me-2"></i>Contenido</label>
+                <textarea class="form-control" id="content" name="content" rows="3" placeholder="Descripción del ticket"></textarea>
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="pie" class="form-label"><i class="bi bi-pen me-2"></i>Pie</label>
+                <input type="text" class="form-control" id="pie" name="pie" placeholder="Ej: Gracias por su compra">
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="filtro" class="form-label"><i class="bi bi-funnel me-2"></i>Frase a filtrar en control</label>
+                <input type="text" class="form-control" id="filtro" name="filtro" placeholder="Ej: vale por">
+            </div>
+            <div class="col-md-4 form-group">
+                <label for="fecha" class="form-label"><i class="bi bi-calendar-date me-2"></i>Fecha (opcional)</label>
+                <input type="date" class="form-control" id="fecha" name="fecha">
+            </div>
+            <div class="col-md-4 form-group">
+                <label for="cantidad" class="form-label"><i class="bi bi-123 me-2"></i>Cantidad de tickets web</label>
+                <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" value="1">
+            </div>
+            <div class="col-md-4 form-group">
+                <label for="inicial" class="form-label"><i class="bi bi-list-ol me-2"></i>Número inicial</label>
+                <input type="number" class="form-control" id="inicial" name="inicial" min="1" value="1">
+            </div>
+            <div class="col-12 d-flex justify-content-end mt-3">
+                <button type="button" class="btn btn-primary btn-lg px-4" id="btnWeb">
+                    <i class="bi bi-printer"></i> Generar Ticket Web
+                </button>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="template" class="form-label">Template</label>
-            <select class="form-select" id="template" name="template">
-                <option value="template_vale_por.html">Vale por (predeterminado)</option>
-            </select>
+          </form>
         </div>
-        <div class="mb-3">
-            <label for="header" class="form-label">Encabezado</label>
-            <input type="text" class="form-control" id="header" name="header" placeholder="Ej: Control">
-        </div>
-        <div class="mb-3">
-            <label for="title" class="form-label">Título</label>
-            <input type="text" class="form-control" id="title" name="title">
-        </div>
-        <div class="mb-3">
-            <label for="content" class="form-label">Contenido</label>
-            <textarea class="form-control" id="content" name="content" rows="4"></textarea>
-        </div>
-        <div class="mb-3">
-            <label for="content" class="form-label">Pie</label>
-            <input type="text" class="form-control" id="pie" name="pie">
-        </div>
-        <div class="mb-3">
-            <label for="filtro" class="form-label">Frase a filtrar en control</label>
-            <input type="text" class="form-control" id="filtro" name="filtro" placeholder="Ej: vale por">
-        </div>
-        <div class="mb-3">
-            <label for="cantidad" class="form-label">Cantidad de tickets web</label>
-            <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" value="1">
-        </div>
-        <div class="mb-3">
-            <label for="inicial" class="form-label">Número inicial</label>
-            <input type="number" class="form-control" id="inicial" name="inicial" min="1" value="1">
-        </div>
-        <div class="mb-3">
-            <label for="logo" class="form-label">Logo</label>
-            <input class="form-control" type="file" id="logo" name="logo" accept="image/*">
-        </div>
-        <button type="button" class="btn btn-primary" id="btnWeb">Generar Ticket Web</button>
-    </form>
-    <div id="result" class="mt-4"></div>
-</div>
+      </div>
+    </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 document.getElementById('ticketForm').onsubmit = async function(e) {
@@ -95,6 +165,7 @@ document.getElementById('btnWeb').onclick = async function() {
     params.append('template', formData.get('template'));
     params.append('filtro', formData.get('filtro'));
     params.append('fecha', formData.get('fecha'));
+    params.append('color', formData.get('color'));
     // No se envía logo para web preview
     window.open('/ticketweb?' + params.toString(), '_blank');
 }

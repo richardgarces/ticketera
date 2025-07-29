@@ -171,11 +171,11 @@
 <body>
 
 <div class="pagina">
-  {{range $i, $ticket := .}}
+  {{range $i, $ticket := .Tickets}}
     {{if eq (mod $i 2) 0}}
     <div class="fila">
     {{end}}
-      <div class="ticket-completo">
+      <div class="ticket-completo" style="background: {{$.Color}};">
         <div class="lado control">
           <div class="control-header">{{$ticket.ENCABEZADO}} N°{{$ticket.CORRELATIVO}}</div>
           <div class="cuerpo">{{$ticket.CONTROL_CONTENT}}</div>
