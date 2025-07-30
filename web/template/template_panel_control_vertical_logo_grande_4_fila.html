@@ -6,10 +6,32 @@
 */}}
 <style>
 @media print {
+  @page {
+    size: letter portrait;
+    margin: 0;
+  }
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+  .pagina {
+    width: 816px !important;
+    min-height: 1056px !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: 0 auto !important;
+    padding: 24px 18px !important;
+    background: #fff !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+  }
   .fila { page-break-inside: avoid; }
 }
 </style>
-<div class="pagina">
+<div class="pagina" style="width:816px;min-height:1056px;margin:24px auto;padding:32px 24px;background:#fff;box-shadow:0 4px 24px #0002;border-radius:12px;display:flex;flex-direction:column;align-items:center;box-sizing:border-box;">
   {{ $n := or $.TicketsPorFila 4 }}
   {{ $total := len .Tickets }}
   {{range $i, $ticket := .Tickets}}

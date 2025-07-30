@@ -132,6 +132,13 @@ func TicketWebHandler(w http.ResponseWriter, r *http.Request) {
 				return 0
 			}
 		},
+		// divf: división flotante para calcular el ancho de los tickets por fila
+		"divf": func(a, b int) float64 {
+			if b == 0 {
+				return 0
+			}
+			return float64(a) / float64(b)
+		},
 	}
 	baseName := templateName
 	tmpl, err := template.New(baseName).Funcs(funcMap).ParseFiles(templatePath)

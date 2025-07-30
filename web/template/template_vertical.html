@@ -19,6 +19,10 @@
 </style>
 </head>
 <body>
+</style>
+</head>
+<body>
+<div class="pagina" style="width:816px;min-height:1056px;margin:24px auto;padding:32px 24px;background:#fff;box-shadow:0 4px 24px #0002;border-radius:12px;display:flex;flex-direction:column;align-items:center;box-sizing:border-box;">
 {{ $n := or $.TicketsPorFila 4 }}
 {{ $total := len .Tickets }}
 {{range $i, $ticket := .Tickets}}
@@ -43,4 +47,6 @@
   </div>
   {{end}}
 {{end}}
+</div>
+</body></html>
 </body></html>

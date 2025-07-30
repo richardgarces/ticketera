@@ -173,12 +173,14 @@
 </head>
 <body>
 
-<div class="pagina">
+<div class="pagina" style="width:816px;min-height:1056px;margin:24px auto;padding:32px 24px;background:#fff;box-shadow:0 4px 24px #0002;border-radius:12px;display:flex;flex-direction:column;align-items:center;box-sizing:border-box;">
+  {{ $n := or $.TicketsPorFila 2 }}
+  {{ $total := len .Tickets }}
   {{range $i, $ticket := .Tickets}}
-    {{if eq (mod $i 2) 0}}
-    <div class="fila">
+    {{if eq (mod $i $n) 0}}
+    <div class="fila" style="display:grid;grid-template-columns:repeat({{$n}},1fr);gap:16px;margin-bottom:18px;width:100%;">
     {{end}}
-      <div class="ticket-completo" style="background: {{$.Color}};">
+      <div class="ticket-completo" style="width:100%;min-width:140px;background:{{$.Color}};box-shadow:0 2px 8px #0001;border-radius:10px;">
         <div class="lado control">
           <div class="control-header">{{$ticket.ENCABEZADO}} N°{{$ticket.CORRELATIVO}}</div>
           <div class="cuerpo">{{$ticket.CONTROL_CONTENT}}</div>
@@ -202,7 +204,8 @@
           </div>
         </div>
       </div>
-    {{if or (eq (mod $i 2) 1) (eq (add $i 1) (len $))}}
+    {{ $next := add $i 1 }}
+    {{if or (eq (mod $next $n) 0) (eq $next $total)}}
     </div>
     {{end}}
   {{end}}
