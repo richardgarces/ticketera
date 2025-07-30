@@ -19,7 +19,7 @@
 
   @media print {
     @page {
-      size: letter portrait;
+      size: {{if eq $.TipoPagina "a4"}}A4 portrait{{else if eq $.TipoPagina "oficio"}}8.5in 13in{{else}}letter portrait{{end}};
       margin: 0;
     }
     body {
@@ -173,12 +173,21 @@
 </head>
 <body>
 
-<div class="pagina" style="width:816px;min-height:1056px;margin:24px auto;padding:32px 24px;background:#fff;box-shadow:0 4px 24px #0002;border-radius:12px;display:flex;flex-direction:column;align-items:center;box-sizing:border-box;">
+<div class="pagina"
+  style="
+    {{if eq $.TipoPagina "a4"}}
+      width:794px;min-height:1123px;
+    {{else if eq $.TipoPagina "oficio"}}
+      width:816px;min-height:1248px;
+    {{else}}
+      width:816px;min-height:1056px;
+    {{end}}
+    margin:24px auto;padding:32px 24px;background:#fff;box-shadow:0 4px 24px #0002;border-radius:12px;display:flex;flex-direction:column;align-items:center;box-sizing:border-box;">
   {{ $n := or $.TicketsPorFila 2 }}
   {{ $total := len .Tickets }}
   {{range $i, $ticket := .Tickets}}
     {{if eq (mod $i $n) 0}}
-    <div class="fila" style="display:grid;grid-template-columns:repeat({{$n}},1fr);gap:16px;margin-bottom:18px;width:100%;">
+    <div class="fila" style="display:grid;grid-template-columns:repeat({{$n}},1fr);grid-auto-rows:minmax(180px,auto);gap:18px 16px;margin-bottom:0;width:100%;align-items:stretch;">
     {{end}}
       <div class="ticket-completo" style="width:100%;min-width:140px;background:{{$.Color}};box-shadow:0 2px 8px #0001;border-radius:10px;">
         <div class="lado control">

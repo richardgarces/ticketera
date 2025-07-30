@@ -99,14 +99,20 @@ func TicketWebHandler(w http.ResponseWriter, r *http.Request) {
 	if ticketsPorFila < 1 {
 		ticketsPorFila = 4 // valor por defecto
 	}
+	tipoPagina := r.URL.Query().Get("tipoPagina")
+	if tipoPagina == "" {
+		tipoPagina = "carta"
+	}
 	data := struct {
 		Tickets        []TicketData
 		Color          string
 		TicketsPorFila int
+		TipoPagina     string
 	}{
 		Tickets:        tickets,
 		Color:          color,
 		TicketsPorFila: ticketsPorFila,
+		TipoPagina:     tipoPagina,
 	}
 
 	wd, err := os.Getwd()

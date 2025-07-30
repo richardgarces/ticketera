@@ -77,98 +77,107 @@
         <div class="card p-4 mb-4 mt-2">
           <h1 class="mb-4 text-center">Generar Ticket</h1>
           <form id="ticketForm" enctype="multipart/form-data">
-        <!-- Eliminado input de fecha duplicado, solo queda el del grid -->
         <div class="row g-3">
-            <div class="col-md-6 form-group d-flex align-items-end">
-                <div class="w-100">
-                  <label for="color" class="form-label"><i class="bi bi-palette-fill me-2" style="color:#ffb300;"></i>Color de fondo del ticket</label>
-                  <select class="form-select" id="color" name="color">
-                      <option value="#fff8e1" style="background:#fff8e1;">Amarillo pastel</option>
-                      <option value="#e1f5fe" style="background:#e1f5fe;">Celeste pastel</option>
-                      <option value="#fce4ec" style="background:#fce4ec;">Rosa pastel</option>
-                      <option value="#e8f5e9" style="background:#e8f5e9;">Verde pastel</option>
-                      <option value="#f3e5f5" style="background:#f3e5f5;">Lila pastel</option>
-                      <option value="#ffe0b2" style="background:#ffe0b2;">Durazno pastel</option>
-                      <option value="#dcedc8" style="background:#dcedc8;">Verde lima pastel</option>
-                      <option value="#b3e5fc" style="background:#b3e5fc;">Azul cielo pastel</option>
-                      <option value="#f8bbd0" style="background:#f8bbd0;">Rosa claro pastel</option>
-                      <option value="#fffde7" style="background:#fffde7;">Amarillo claro pastel</option>
-                      <option value="#fff" style="background:#fff;">Blanco clásico</option>
-                  </select>
-                </div>
-                <div id="colorPreview" class="ms-3 mb-2" style="width:36px;height:36px;border-radius:8px;border:1px solid #ccc;background:#fff8e1;"></div>
+          <!-- Grupo de configuración de página y grilla -->
+          <div class="col-md-4 form-group">
+            <label for="tipoPagina" class="form-label"><i class="bi bi-file-earmark-text me-2" style="color:#1976d2;"></i>Tipo de página</label>
+            <select class="form-select" id="tipoPagina" name="tipoPagina">
+              <option value="carta" selected>Carta (8.5x11")</option>
+              <option value="a4">A4 (210x297mm)</option>
+              <option value="oficio">Oficio (8.5x13")</option>
+            </select>
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="ticketsPorFila" class="form-label"><i class="bi bi-grid-3x3-gap-fill me-2" style="color:#1976d2;"></i>Tickets por fila</label>
+            <input type="number" class="form-control" id="ticketsPorFila" name="ticketsPorFila" min="1" max="8" value="4">
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="cantidad" class="form-label"><i class="bi bi-collection-fill me-2" style="color:#6d4c41;"></i>Cantidad de tickets web</label>
+            <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" value="1">
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="inicial" class="form-label"><i class="bi bi-list-ol me-2" style="color:#c62828;"></i>Número inicial</label>
+            <input type="number" class="form-control" id="inicial" name="inicial" min="1" value="1">
+          </div>
+          <div class="col-md-6 form-group d-flex align-items-end">
+            <div class="w-100">
+              <label for="color" class="form-label"><i class="bi bi-palette-fill me-2" style="color:#ffb300;"></i>Color de fondo del ticket</label>
+              <select class="form-select" id="color" name="color">
+                <option value="#fff8e1" style="background:#fff8e1;">Amarillo pastel</option>
+                <option value="#e1f5fe" style="background:#e1f5fe;">Celeste pastel</option>
+                <option value="#fce4ec" style="background:#fce4ec;">Rosa pastel</option>
+                <option value="#e8f5e9" style="background:#e8f5e9;">Verde pastel</option>
+                <option value="#f3e5f5" style="background:#f3e5f5;">Lila pastel</option>
+                <option value="#ffe0b2" style="background:#ffe0b2;">Durazno pastel</option>
+                <option value="#dcedc8" style="background:#dcedc8;">Verde lima pastel</option>
+                <option value="#b3e5fc" style="background:#b3e5fc;">Azul cielo pastel</option>
+                <option value="#f8bbd0" style="background:#f8bbd0;">Rosa claro pastel</option>
+                <option value="#fffde7" style="background:#fffde7;">Amarillo claro pastel</option>
+                <option value="#fff" style="background:#fff;">Blanco clásico</option>
+              </select>
             </div>
-            <div class="col-md-6 form-group d-flex align-items-center">
-                <label for="template" class="form-label mb-0 me-2"><i class="bi bi-window-stack me-2" style="color:#42a5f5;"></i>Plantilla</label>
-                <select class="form-select me-2" id="template" name="template" style="max-width:70%;">
-                    <option value="template_vale_por.html" selected>Vale por (predeterminado)</option>
-                    <option value="template_panel_ancho.html">Panel ancho</option>
-                    <option value="template_panel_simple.html">Panel simple</option>
-                    <option value="template_panel_control.html">Panel control</option>
-                    <option value="template_panel_control_vertical.html">Panel control vertical</option>
-                    <option value="template_panel_control_vertical_sin_logo.html">Panel control vertical sin logo</option>
-                    <option value="template_panel_control_vertical_logo_grande.html">Panel control vertical logo grande</option>
-                    <option value="template_panel_control_vertical_logo_grande_pie.html">Panel control vertical logo grande pie</option>
-                    <option value="template_panel_control_vertical_logo_grande_4_fila.html">Panel control vertical logo grande (4 por fila)</option>
-                    <option value="template_panel_control_vertical_logo_grande_pie_color.html">Panel control vertical logo grande pie color</option>
-                    <option value="template_con_sombra.html">Con sombra</option>
-                    <option value="template_control_arriba.html">Control arriba</option>
-                    <option value="template_dos_ticket_ongrid.html">Dos tickets en grilla</option>
-                    <option value="template_fondo_claro.html">Fondo claro</option>
-                    <option value="template_minimalista.html">Minimalista</option>
-                    <option value="template_tipo_sticker.html">Tipo sticker</option>
-                    <option value="template_tipo_tabla.html">Tipo tabla</option>
-                    <option value="template_tipo_tarjeta.html">Tipo tarjeta</option>
-                    <option value="template_vertical.html">Vertical</option>
-                </select>
-                <button type="button" id="btnEjemploPlantilla" class="btn btn-link p-0" title="Ver ejemplo de plantilla" style="font-size:1.5rem;line-height:1;">
-                  <i class="bi bi-eye-fill"></i>
-                </button>
+            <div id="colorPreview" class="ms-3 mb-2" style="width:36px;height:36px;border-radius:8px;border:1px solid #ccc;background:#fff8e1;"></div>
+          </div>
+          <div class="col-md-6 form-group d-flex align-items-center">
+            <label for="template" class="form-label mb-0 me-2"><i class="bi bi-window-stack me-2" style="color:#42a5f5;"></i>Plantilla</label>
+            <select class="form-select me-2" id="template" name="template" style="max-width:70%;">
+              <option value="template_vale_por.html" selected>Vale por (predeterminado)</option>
+              <option value="template_panel_ancho.html">Panel ancho</option>
+              <option value="template_panel_simple.html">Panel simple</option>
+              <option value="template_panel_control.html">Panel control</option>
+              <option value="template_panel_control_vertical.html">Panel control vertical</option>
+              <option value="template_panel_control_vertical_sin_logo.html">Panel control vertical sin logo</option>
+              <option value="template_panel_control_vertical_logo_grande.html">Panel control vertical logo grande</option>
+              <option value="template_panel_control_vertical_logo_grande_pie.html">Panel control vertical logo grande pie</option>
+              <option value="template_panel_control_vertical_logo_grande_4_fila.html">Panel control vertical logo grande (4 por fila)</option>
+              <option value="template_panel_control_vertical_logo_grande_pie_color.html">Panel control vertical logo grande pie color</option>
+              <option value="template_con_sombra.html">Con sombra</option>
+              <option value="template_control_arriba.html">Control arriba</option>
+              <option value="template_dos_ticket_ongrid.html">Dos tickets en grilla</option>
+              <option value="template_fondo_claro.html">Fondo claro</option>
+              <option value="template_minimalista.html">Minimalista</option>
+              <option value="template_tipo_sticker.html">Tipo sticker</option>
+              <option value="template_tipo_tabla.html">Tipo tabla</option>
+              <option value="template_tipo_tarjeta.html">Tipo tarjeta</option>
+              <option value="template_vertical.html">Vertical</option>
+            </select>
+            <button type="button" id="btnEjemploPlantilla" class="btn btn-link p-0" title="Ver ejemplo de plantilla" style="font-size:1.5rem;line-height:1;">
+              <i class="bi bi-eye-fill"></i>
+            </button>
+          </div>
+          <!-- Grupo de contenido y logo -->
+          <div class="col-md-6 form-group">
+            <label for="logo" class="form-label"><i class="bi bi-image-fill me-2" style="color:#43a047;"></i>Logo</label>
+            <input class="form-control" type="file" id="logo" name="logo" accept="image/*">
+            <div class="mt-2">
+              <img id="logoPreview" src="" alt="Vista previa logo" style="max-width:60px;max-height:60px;display:none;border-radius:8px;border:1px solid #ccc;" />
             </div>
-            <div class="col-md-6 form-group">
-                <label for="logo" class="form-label"><i class="bi bi-image-fill me-2" style="color:#43a047;"></i>Logo</label>
-                <input class="form-control" type="file" id="logo" name="logo" accept="image/*">
-                <div class="mt-2">
-                  <img id="logoPreview" src="" alt="Vista previa logo" style="max-width:60px;max-height:60px;display:none;border-radius:8px;border:1px solid #ccc;" />
-                </div>
-            </div>
-            <div class="col-md-6 form-group">
-                <label for="header" class="form-label"><i class="bi bi-type-bold me-2" style="color:#8e24aa;"></i>Encabezado</label>
-                <input type="text" class="form-control" id="header" name="header" placeholder="Ej: Control">
-            </div>
-            <div class="col-md-6 form-group">
-                <label for="title" class="form-label"><i class="bi bi-card-text me-2" style="color:#3949ab;"></i>Título</label>
-                <input type="text" class="form-control" id="title" name="title">
-            </div>
-            <div class="col-12 form-group">
-                <label for="content" class="form-label"><i class="bi bi-chat-left-text-fill me-2" style="color:#00bcd4;"></i>Contenido</label>
-                <textarea class="form-control" id="content" name="content" rows="3" placeholder="Descripción del ticket"></textarea>
-            </div>
-            <div class="col-md-6 form-group">
-                <label for="pie" class="form-label"><i class="bi bi-pen-fill me-2" style="color:#ef5350;"></i>Pie</label>
-                <input type="text" class="form-control" id="pie" name="pie" placeholder="Ej: Gracias por su compra">
-            </div>
-            <div class="col-md-6 form-group">
-                <label for="filtro" class="form-label"><i class="bi bi-funnel-fill me-2" style="color:#ffb300;"></i>Frase a filtrar en control</label>
-                <input type="text" class="form-control" id="filtro" name="filtro" placeholder="Ej: vale por">
-            </div>
-            <div class="col-md-4 form-group">
-                <label for="fecha" class="form-label"><i class="bi bi-calendar2-week-fill me-2" style="color:#00897b;"></i>Fecha (opcional)</label>
-                <input type="date" class="form-control" id="fecha" name="fecha">
-            </div>
-            <div class="col-md-4 form-group">
-                <label for="cantidad" class="form-label"><i class="bi bi-collection-fill me-2" style="color:#6d4c41;"></i>Cantidad de tickets web</label>
-                <input type="number" class="form-control" id="cantidad" name="cantidad" min="1" value="1">
-            </div>
-            <div class="col-md-4 form-group">
-                <label for="ticketsPorFila" class="form-label"><i class="bi bi-grid-3x3-gap-fill me-2" style="color:#1976d2;"></i>Tickets por fila</label>
-                <input type="number" class="form-control" id="ticketsPorFila" name="ticketsPorFila" min="1" max="8" value="4">
-            </div>
-            <div class="col-md-4 form-group">
-                <label for="inicial" class="form-label"><i class="bi bi-list-ol me-2" style="color:#c62828;"></i>Número inicial</label>
-                <input type="number" class="form-control" id="inicial" name="inicial" min="1" value="1">
-            </div>
-            <div class="col-12 d-flex justify-content-end mt-3">
+          </div>
+          <div class="col-md-6 form-group">
+            <label for="header" class="form-label"><i class="bi bi-type-bold me-2" style="color:#8e24aa;"></i>Encabezado</label>
+            <input type="text" class="form-control" id="header" name="header" placeholder="Ej: Control">
+          </div>
+          <div class="col-md-6 form-group">
+            <label for="title" class="form-label"><i class="bi bi-card-text me-2" style="color:#3949ab;"></i>Título</label>
+            <input type="text" class="form-control" id="title" name="title">
+          </div>
+          <div class="col-12 form-group">
+            <label for="content" class="form-label"><i class="bi bi-chat-left-text-fill me-2" style="color:#00bcd4;"></i>Contenido</label>
+            <textarea class="form-control" id="content" name="content" rows="3" placeholder="Descripción del ticket"></textarea>
+          </div>
+          <div class="col-md-6 form-group">
+            <label for="pie" class="form-label"><i class="bi bi-pen-fill me-2" style="color:#ef5350;"></i>Pie</label>
+            <input type="text" class="form-control" id="pie" name="pie" placeholder="Ej: Gracias por su compra">
+          </div>
+          <div class="col-md-6 form-group">
+            <label for="filtro" class="form-label"><i class="bi bi-funnel-fill me-2" style="color:#ffb300;"></i>Frase a filtrar en control</label>
+            <input type="text" class="form-control" id="filtro" name="filtro" placeholder="Ej: vale por">
+          </div>
+          <div class="col-md-4 form-group">
+            <label for="fecha" class="form-label"><i class="bi bi-calendar2-week-fill me-2" style="color:#00897b;"></i>Fecha (opcional)</label>
+            <input type="date" class="form-control" id="fecha" name="fecha">
+          </div>
+          <div class="col-12 d-flex justify-content-end mt-3">
         <!-- Modal de ejemplo de plantilla -->
         <div class="modal fade" id="modalEjemploPlantilla" tabindex="-1" aria-labelledby="modalEjemploPlantillaLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -580,6 +589,7 @@ document.getElementById('btnWeb').onclick = async function() {
     params.append('color', formData.get('color'));
     // No se envía logo para web preview
     params.append('ticketsPorFila', formData.get('ticketsPorFila'));
+    params.append('tipoPagina', formData.get('tipoPagina'));
     window.open('/ticketweb?' + params.toString(), '_blank');
 }
 </script>
