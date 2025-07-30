@@ -12,7 +12,7 @@
 <style>
   @media print {
     @page {
-      size: letter portrait;
+      size: {{if eq $.TipoPagina "a4"}}A4 portrait{{else if eq $.TipoPagina "oficio"}}8.5in 13in{{else}}letter portrait{{end}};
       margin: 0;
     }
     body {
